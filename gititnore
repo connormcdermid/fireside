@@ -1,6 +1,0 @@
-.env
-venv/
-venv/*
-*.iml
-.idea
-.idea/*
