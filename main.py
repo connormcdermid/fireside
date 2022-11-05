@@ -19,14 +19,14 @@ account_sid = TWILIO_SID
 auth_token = TWILIO_AUTH_KEY
 client = Client(account_sid, auth_token)
 
-message = client.messages \
-    .create(
-    body="Join Earth's mightiest heroes. Like Kevin Bacon.",
-    from_=TWILIO_NUMBER,
-    to='+18622285361'
-)
+# message = client.messages \
+#     .create(
+#     body="Join Earth's mightiest heroes. Like Kevin Bacon.",
+#     from_=TWILIO_NUMBER,
+#     to='+18622285361'
+#)
 
-print(message.sid)
+# print(message.sid)
 
 app = Flask(__name__)
 
@@ -50,4 +50,4 @@ def sms_reply():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=80)
