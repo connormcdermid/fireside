@@ -24,7 +24,7 @@ client = Client(account_sid, auth_token)
 #     body="Join Earth's mightiest heroes. Like Kevin Bacon.",
 #     from_=TWILIO_NUMBER,
 #     to='+18622285361'
-#)
+# )
 
 # print(message.sid)
 
@@ -50,4 +50,4 @@ def sms_reply():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=80)
+    app.run(debug=True, port=80, host="sms.firesidechat.tech")
