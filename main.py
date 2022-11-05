@@ -45,7 +45,7 @@ def sms_reply():
         from_=TWILIO_NUMBER,
         to='+18622285361'
     )
-
+    print(str(resp))
     return str(resp)
 
 
