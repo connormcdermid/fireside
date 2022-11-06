@@ -8,6 +8,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 import json
 import pymysql
 from flask_cors import CORS, cross_origin
+import socket
 from OpenSSL import SSL
 
 dotenv_path = join(dirname(__file__), '.env')
@@ -35,10 +36,14 @@ client = Client(account_sid, auth_token)
 # print(message.sid)
 
 # Create SSL context to bind the Flask app to
-context = SSL.Context(SSL.TLSv1_2_METHOD)
-context.use_privatekey_file('/etc/letsencrypt/live/sms.firesidechat.tech/privkey.pem')
-context.use_certificate_chain_file('/etc/letsencrypt/live/sms.firesidechat.tech/fullchain.pem')
-context.use_certificate_file('/etc/letsencrypt/live/sms.firesidechat.tech/cert.pem')
+#context = SSL.Context(SSL.TLSv1_2_METHOD)
+#context.use_privatekey_file('/etc/letsencrypt/live/sms.firesidechat.tech/privkey.pem')
+#context.use_certificate_chain_file('/etc/letsencrypt/live/sms.firesidechat.tech/fullchain.pem')
+#context.use_certificate_file('/etc/letsencrypt/live/sms.firesidechat.tech/cert.pem')
+
+#socket_instance = socket.socket()
+
+#ssl_socket_instance = context.wrap_socket(socket_instance)
 
 app = Flask(__name__)
 cors = CORS(app, resources={
@@ -138,4 +143,5 @@ def reg_reply():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000, host="0.0.0.0")
+    app.run(debug=True, port=8000, host="0.0.0.0", ssl_context=('/etc/letsencrypt/live/sms.firesidechat.tech/cert.pem', '/etc/letsencrypt/live/sms.firesidechat.tech/privkey.pem'))
+#   app.run(debug=True, port=8000, host="0.0.0.0", ssl_context=ssl_socket_instance)
