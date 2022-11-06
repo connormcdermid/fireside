@@ -74,14 +74,15 @@ def sms_reply():
     c.execute(f"SELECT unregistered_number FROM conversations.associations WHERE registered_number='{source}'")
     result = c.fetchone()
     print(result)
-    if type(result) is not None:
+    if type(result) is not None and result is not None:
         target = str(result[0])
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
         return
 
     c.execute(f"SELECT registered_number FROM conversations.associations WHERE unregistered_number='{source}'")
     result = c.fetchone()
-    if type(result) is not None:
+    print(result)
+    if type(result) is not None and result is not None:
         target = str(result[0])
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
         return
