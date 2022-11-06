@@ -5,6 +5,7 @@ from flask import Flask, request, redirect, make_response
 from twilio.twiml.messaging_response import MessagingResponse
 import json
 import pymysql
+from flask_cors import CORS, cross_origin
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -31,6 +32,8 @@ client = Client(account_sid, auth_token)
 # print(message.sid)
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 conn = pymysql.connect(
     db="conversations",
@@ -40,6 +43,7 @@ conn = pymysql.connect(
 )
 c = conn.cursor()
 @app.route("/sms", methods=['GET', 'POST'])
+@cross_origin()
 def sms_reply():
     """Respond to incoming calls with a simple text message."""
     # Start our TwiML response
@@ -58,6 +62,7 @@ def sms_reply():
 
 
 @app.route("/reg", methods=['POST'])
+@cross_origin()
 def reg_reply():
 
 
