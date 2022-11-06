@@ -32,7 +32,11 @@ client = Client(account_sid, auth_token)
 # print(message.sid)
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resource={
+    r"/*": {
+        "origins": "*"
+    }
+})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 conn = pymysql.connect(
@@ -42,6 +46,8 @@ conn = pymysql.connect(
     host="localhost"
 )
 c = conn.cursor()
+
+
 @app.route("/sms", methods=['GET', 'POST'])
 @cross_origin()
 def sms_reply():
@@ -64,8 +70,6 @@ def sms_reply():
 @app.route("/reg", methods=['POST'])
 @cross_origin()
 def reg_reply():
-
-
     jsonraw = json.dumps(request.json)
     jsonData = json.loads(jsonraw)
     alias = jsonData["user_alias"]
@@ -76,6 +80,7 @@ def reg_reply():
         response = make_response("user_exists", 200)
         response.mimetype = "text/plain"
         response.headers.add('Access-Control-Allow-Origin', 'http://sms.firesidechat.tech')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
         return response
 
     c.execute(f"INSERT INTO conversations.test_users VALUES ('{alias}', '{phone}')")
@@ -83,6 +88,8 @@ def reg_reply():
     response = make_response("success", 200)
     response.mimetype = "text/plain"
     response.headers.add('Access-Control-Allow-Origin', 'http://sms.firesidechat.tech')
+    response.headers.add('Access-Control-Allow-Methods', 'POST')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
     return response
 
 
