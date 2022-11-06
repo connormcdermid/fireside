@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 from os.path import join, dirname
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, make_response
 from twilio.twiml.messaging_response import MessagingResponse
 import json
 import pymysql
@@ -59,6 +59,8 @@ def sms_reply():
 
 @app.route("/reg", methods=['POST'])
 def reg_reply():
+
+
     jsonraw = json.dumps(request.json)
     jsonData = json.loads(jsonraw)
     alias = jsonData["user_alias"]
@@ -66,11 +68,17 @@ def reg_reply():
     print(alias)
     print(phone)
     if c.execute(f"SELECT * FROM conversations.test_users WHERE number={phone}") != 0:
-        return "user_exists"
+        response = make_response("user_exists", 200)
+        response.mimetype = "text/plain"
+        response.headers.add('Access-Control-Allow-Origin', 'http://sms.firesidechat.tech')
+        return response
 
     c.execute(f"INSERT INTO conversations.test_users VALUES ('{alias}', '{phone}')")
     conn.commit()
-    return "success"
+    response = make_response("success", 200)
+    response.mimetype = "text/plain"
+    response.headers.add('Access-Control-Allow-Origin', 'http://sms.firesidechat.tech')
+    return response
 
 
 if __name__ == "__main__":
