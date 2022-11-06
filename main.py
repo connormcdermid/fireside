@@ -84,8 +84,8 @@ def sms_reply():
     result1 = c.fetchone()
     c.execute(f"SELECT registered_number FROM conversations.associations WHERE unregistered_number='{source}'")
     result2 = c.fetchone()
-    print("result1:" + result1)
-    print("result2:" + result2)
+    print("result1:", result1)
+    print("result2:", result2)
     target = None
     if result1 is not None or result2 is not None:
         if result1 is not None:
