@@ -3,6 +3,7 @@ import os
 from os.path import join, dirname
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
+import json
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -47,6 +48,16 @@ def sms_reply():
     )
     print(str(resp))
     return str(resp)
+
+
+@app.route("/reg", methods=['POST'])
+def reg_reply():
+    jsonData = json.load(request.json)
+    alias = jsonData["alias"]
+    phone = jsonData["number"]
+    print(alias)
+    print(phone)
+    return "Data received."
 
 
 if __name__ == "__main__":
