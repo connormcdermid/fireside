@@ -92,7 +92,7 @@ def sms_reply():
         else:
             target = str(result2[0])
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
-        return 200
+        return "success"
 
     alias = re.compile("^(\w+),").findall(body)[0]
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
