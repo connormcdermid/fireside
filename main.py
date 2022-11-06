@@ -103,7 +103,7 @@ def sms_reply():
         if re.match("^([+])[\d]{11}$", target):
             client.messages \
             .create(
-                body=re.split("^(\w+),", body)[0],
+                body=re.split("^(\w+),", body)[0],22
                 from_=TWILIO_NUMBER,
                 to=target
             )
@@ -122,10 +122,12 @@ def sms_reply():
 @app.route("/reg", methods=['POST'])
 @cross_origin()
 def reg_reply():
-    jsonraw = json.dumps(request.json)
-    jsonData = json.loads(jsonraw)
-    alias = jsonData["user_alias"]
-    phone = jsonData["user_number"]
+    contentype = request.content_type;
+    print(contentype)
+    form = request.form
+    alias = form.get("user_alias")
+    phone = form.get("user_number")
+
     print(alias)
     print(phone)
     if c.execute(f"SELECT * FROM conversations.test_users WHERE number={phone}") != 0:
