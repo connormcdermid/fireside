@@ -54,8 +54,8 @@ def sms_reply():
 def reg_reply():
     jsonraw = json.dumps(request.json)
     jsonData = json.loads(jsonraw)
-    alias = jsonData["alias"]
-    phone = jsonData["number"]
+    alias = jsonData["user_alias"]
+    phone = jsonData["user_number"]
     print(alias)
     print(phone)
     return "Data received."
