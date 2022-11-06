@@ -4,6 +4,7 @@ from os.path import join, dirname
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 import json
+import pymysql
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -31,7 +32,13 @@ client = Client(account_sid, auth_token)
 
 app = Flask(__name__)
 
-
+conn = pymysql.connect(
+    db="conversations",
+    user="apache",
+    passwd="campguy",
+    host="localhost"
+)
+c = conn.cursor()
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_reply():
     """Respond to incoming calls with a simple text message."""
@@ -58,7 +65,12 @@ def reg_reply():
     phone = jsonData["user_number"]
     print(alias)
     print(phone)
-    return "Data received."
+    if c.execute(f"SELECT * FROM conversations.test_users WHERE number={phone}") != 0:
+        return "user_exists"
+
+    c.execute(f"INSERT INTO conversations.test_users VALUES ({alias}, {phone})")
+    conn.commit()
+    return "success"
 
 
 if __name__ == "__main__":
