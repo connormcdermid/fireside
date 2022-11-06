@@ -133,7 +133,7 @@ def reg_reply():
     if c.execute(f"SELECT * FROM conversations.test_users WHERE number={phone}") != 0:
         response = make_response("user_exists", 200)
         response.mimetype = "text/plain"
-        response.headers.add('Access-Control-Allow-Origin', 'http://sms.firesidechat.tech')
+        response.headers.add('Access-Control-Allow-Origin', 'https://sms.firesidechat.tech')
         response.headers.add('Access-Control-Allow-Methods', 'POST')
         return response
 
