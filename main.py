@@ -66,7 +66,7 @@ def sms_reply():
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
     result = c.fetchone()
     while result:
-        target = str(result['number'])
+        target = str(result[0])
         if re.match("^([+])[\d]{11}$", target):
             client.messages \
             .create(
