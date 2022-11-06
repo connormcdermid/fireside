@@ -103,7 +103,7 @@ def sms_reply():
         if re.match("^([+])[\d]{11}$", target):
             client.messages \
             .create(
-                body=body.split(",")[1],
+                body=re.split(),
                 from_=TWILIO_NUMBER,
                 to=target
             )
