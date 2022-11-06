@@ -77,8 +77,9 @@ def sms_reply():
 
     # Add a message
     resp.message("Invalid alias, please try again!")
+    client.messages.create(body="Invalid alias!", from_=TWILIO_NUMBER, to=source)
     print(str(resp))
-    return str(resp)2
+    return str(resp)
 
 
 @app.route("/reg", methods=['POST'])
