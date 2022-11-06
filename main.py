@@ -73,6 +73,7 @@ def sms_reply():
     print(alias)
     c.execute(f"SELECT unregistered_number FROM conversations.associations WHERE registered_number='{source}'")
     result = c.fetchone()
+    print(result)
     if type(result) is not None:
         target = str(result[0])
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
