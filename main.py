@@ -102,11 +102,12 @@ def sms_reply():
         if re.match("^([+])[\d]{11}$", target):
             client.messages \
             .create(
-                body=re.split("^(\w+),", body)[1],
+                body=body.split(",")[1],
                 from_=TWILIO_NUMBER,
                 to=target
             )
-            c.execute(f"INSERT INTO conversations.associations(registered_alias, registered_number, unregistered_number) VALUES ('{alias}', '{target}', {'+' + source})")
+            source = "+" + source
+            c.execute(f"INSERT INTO conversations.associations(registered_alias, registered_number, unregistered_number) VALUES ('{alias}', '{target}', '{source}')")
             conn.commit()
             return "success";
 
