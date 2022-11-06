@@ -17,7 +17,7 @@ load_dotenv(dotenv_path)
 
 TWILIO_AUTH_KEY = os.environ.get("TWILIO_AUTH_KEY")
 TWILIO_SID = os.environ.get("TWILIO_SID")
-TWILIO_NUMBER = "+17014909781"
+TWILIO_NUMBER = "+19785811148"
 
 from twilio.rest import Client
 validator = RequestValidator(TWILIO_AUTH_KEY)
@@ -141,7 +141,7 @@ def reg_reply():
     conn.commit()
     response = make_response("success", 200)
     response.mimetype = "text/plain"
-    response.headers.add('Access-Control-Allow-Origin', 'http://sms.firesidechat.tech')
+    response.headers.add('Access-Control-Allow-Origin', 'https://sms.firesidechat.tech')
     response.headers.add('Access-Control-Allow-Methods', 'POST')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
     return response
