@@ -1,3 +1,5 @@
+import re
+
 from dotenv import load_dotenv
 import os
 from os.path import join, dirname
@@ -59,6 +61,18 @@ def sms_reply():
     print(source)
     body = form.get('Body')
     print(body)
+    alias = re.match("^(\w+),", body)
+    c.execute(f"SELECT * FROM conversations.test_users WHERE 'alias'={alias}")
+    result = c.fetchone()
+    target = result['number']
+    if re.match("^([+])[\d]{11}$", target):
+        client.messages \
+        .create(
+            body=re.split("^(\w+),", body)[1],
+            from_=TWILIO_NUMBER,
+            to=target
+        )
+        
 
 
     # Add a message
