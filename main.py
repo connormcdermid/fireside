@@ -54,11 +54,12 @@ def sms_reply():
     """Respond to incoming calls with a simple text message."""
     # Start our TwiML response
     resp = MessagingResponse()
-    source = request["From"]
-    body = request["To"]
-    print(source)
-    print(body)
-
+    args = request.args
+    form = request.form
+    values = request.values
+    print(args)
+    print(form)
+    print(values)
 
     # Add a message
     resp.message("The Robots are coming! Head for the hills!")
