@@ -53,7 +53,7 @@ def sms_reply():
 @app.route("/reg", methods=['POST'])
 def reg_reply():
     jsonraw = json.dumps(request.json)
-    jsonData = json.load(jsonraw)
+    jsonData = json.loads(jsonraw)
     alias = jsonData["alias"]
     phone = jsonData["number"]
     print(alias)
