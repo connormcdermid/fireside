@@ -61,7 +61,7 @@ def sms_reply():
     print(source)
     body = form.get('Body')
     print(body)
-    alias = re.match("^(\w+),", body)
+    alias = str(re.match("^(\w+),", body))
     c.execute(f"SELECT * FROM conversations.test_users WHERE 'alias'={alias}")
     result = c.fetchone()
     target = result['number']
@@ -72,7 +72,7 @@ def sms_reply():
             from_=TWILIO_NUMBER,
             to=target
         )
-        
+
 
 
     # Add a message
