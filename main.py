@@ -130,14 +130,14 @@ def reg_reply():
 
     print(alias)
     print(phone)
-    if c.execute(f"SELECT * FROM conversations.test_users WHERE number={phone}") != 0:
+    if c.execute(f"SELECT * FROM conversations.test_users WHERE alias='{alias}'") != 0:
         response = make_response("user_exists", 200)
         response.mimetype = "text/plain"
 #        response.headers.add('Access-Control-Allow-Origin', 'https://sms.firesidechat.tech/reg')
         response.headers.add('Access-Control-Allow-Methods', 'POST')
         return response
 
-    c.execute(f"INSERT INTO conversations.test_users VALUES ('{alias}', '{phone}')")
+    c.execute(f"INSERT INTO conversations.test_users VALUES ('{alias}','{phone}')")
     conn.commit()
     response = make_response("success", 200)
     response.mimetype = "text/plain"
