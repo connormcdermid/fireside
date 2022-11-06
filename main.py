@@ -32,7 +32,7 @@ client = Client(account_sid, auth_token)
 # print(message.sid)
 
 app = Flask(__name__)
-cors = CORS(app, resource={
+cors = CORS(app, resources={
     r"/*": {
         "origins": "*"
     }
@@ -54,6 +54,7 @@ def sms_reply():
     """Respond to incoming calls with a simple text message."""
     # Start our TwiML response
     resp = MessagingResponse()
+    print(request)
 
     # Add a message
     resp.message("The Robots are coming! Head for the hills!")
