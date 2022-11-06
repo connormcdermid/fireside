@@ -9,6 +9,7 @@ import json
 import pymysql
 from flask_cors import CORS, cross_origin
 from OpenSSL import SSL
+from twilio.request_validator import RequestValidator
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -18,6 +19,7 @@ TWILIO_SID = os.environ.get("TWILIO_SID")
 TWILIO_NUMBER = "+17014909781"
 
 from twilio.rest import Client
+validator = RequestValidator(TWILIO_AUTH_KEY)
 
 # Find your Account SID and Auth Token at twilio.com/console
 # and set the environment variables. See http://twil.io/secure
