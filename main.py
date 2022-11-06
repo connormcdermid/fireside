@@ -74,6 +74,7 @@ def sms_reply():
                 from_=TWILIO_NUMBER,
                 to=target
             )
+            break;
 
 
     # Add a message
