@@ -75,6 +75,9 @@ def sms_reply():
     body = form.get('Body')
     print(body)
     alias = re.compile("^(\w+),").findall(body)[0]
+    if "STOP" in body:
+        c.execute(f"DELETE FROM conversations.associations WHERE registered_number='{source}'")
+        conn.commit()
     print(alias)
     c.execute(f"SELECT unregistered_number FROM conversations.associations WHERE registered_number='{source}'")
     result = c.fetchone()
@@ -104,9 +107,9 @@ def sms_reply():
                 from_=TWILIO_NUMBER,
                 to=target
             )
-            c.execute(f"INSERT INTO conversations.associations VALUES ('{alias}', '{target}', {source})")
+            c.execute(f"INSERT INTO conversations.associations(registered_alias, registered_number, unregistered_number) VALUES ('{alias}', '{target}', {'+' + source})")
             conn.commit()
-            break;
+            return;
 
 
     # Add a message
