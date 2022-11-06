@@ -53,7 +53,8 @@ c = conn.cursor()
 @app.route("/sms", methods=['GET', 'POST'])
 @cross_origin()
 def sms_reply():
-    """Respond to incoming calls with a simple text message."""
+
+
     # Start our TwiML response
     resp = MessagingResponse()
     form = request.form
@@ -63,6 +64,21 @@ def sms_reply():
     print(body)
     alias = re.compile("^(\w+),").findall(body)[0]
     print(alias)
+    c.execute(f"SELECT unregistered_number FROM conversations.associations WHERE registered_number='{source}'")
+    result = c.fetchone()
+    if type(result) is not None:
+        target = str(result[0])
+        client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
+        return
+
+    c.execute(f"SELECT registered_number FROM conversations.associations WHERE unregistered_number='{source}'")
+    result = c.fetchone()
+    if type(result) is not None:
+        target = str(result[0])
+        client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
+        return
+
+
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
     result = c.fetchone()
     while result:
@@ -74,6 +90,8 @@ def sms_reply():
                 from_=TWILIO_NUMBER,
                 to=target
             )
+            c.execute(f"INSERT INTO conversations.associations VALUES ('{alias}', '{target}', {source})")
+            conn.commit()
             break;
 
 
