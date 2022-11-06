@@ -61,7 +61,7 @@ def sms_reply():
     print(source)
     body = form.get('Body')
     print(body)
-    alias = str(re.match("^(\w+),", body))
+    alias = re.compile("^(\w+),").findall(body)[0]
     c.execute(f"SELECT * FROM conversations.test_users WHERE 'alias'={alias}")
     result = c.fetchone()
     target = result['number']
