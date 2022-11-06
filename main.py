@@ -81,20 +81,18 @@ def sms_reply():
         c.execute(f"DELETE FROM conversations.associations WHERE registered_number='{source}'")
         conn.commit()
     c.execute(f"SELECT unregistered_number FROM conversations.associations WHERE registered_number='{source}'")
-    result = c.fetchone()
-    print(result)
-    if type(result) is not None or result is not None:
-        target = str(result[0])
-        client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
-        return
-
+    result1 = c.fetchone()
     c.execute(f"SELECT registered_number FROM conversations.associations WHERE unregistered_number='{source}'")
-    result = c.fetchone()
-    print(result)
-    if type(result) is not None or result is not None:
-        target = str(result[0])
+    result2 = c.fetchone()
+    print(result1)
+    target = None
+    if result1 is not None or result2 is not None:
+        if result1 is not None:
+            target = str(result1[0])
+        else:
+            target = str(result2[0])
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
-        return
+        return 200
 
     alias = re.compile("^(\w+),").findall(body)[0]
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
