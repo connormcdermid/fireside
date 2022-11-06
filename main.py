@@ -68,7 +68,7 @@ def reg_reply():
     if c.execute(f"SELECT * FROM conversations.test_users WHERE number={phone}") != 0:
         return "user_exists"
 
-    c.execute(f"INSERT INTO conversations.test_users VALUES ({alias}, {phone})")
+    c.execute(f"INSERT INTO conversations.test_users VALUES ('{alias}', '{phone}')")
     conn.commit()
     return "success"
 
