@@ -98,6 +98,8 @@ def sms_reply():
     alias = body.split(",")[0].lower()
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
     result = c.fetchone()
+    if "+" not in source:
+        source = "+" + source
     while result:
         target = str(result[0])
         if re.match("^([+])[\d]{11}$", target):
