@@ -8,6 +8,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 import json
 import pymysql
 from flask_cors import CORS, cross_origin
+from OpenSSL import SSL
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -32,6 +33,12 @@ client = Client(account_sid, auth_token)
 # )
 
 # print(message.sid)
+
+# Create SSL context to bind the Flask app to
+context = SSL.Context(SSL.TLSv1_2_METHOD)
+context.use_privatekey_file('/etc/letsencrypt/live/sms.firesidechat.tech/privkey.pem')
+context.use_certificate_chain_file('/etc/letsencrypt/live/sms.firesidechat.tech/fullchain.pem')
+context.use_certificate_file('/etc/letsencrypt/live/sms.firesidechat.tech/cert.pem')
 
 app = Flask(__name__)
 cors = CORS(app, resources={
