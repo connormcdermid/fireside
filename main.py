@@ -94,7 +94,7 @@ def sms_reply():
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
         return "success"
 
-    alias = re.compile("^(\w+),").findall(body)[0]
+    alias = re.compile("^(\w+),").findall(body)[0].lower()
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
     result = c.fetchone()
     while result:
@@ -108,7 +108,7 @@ def sms_reply():
             )
             c.execute(f"INSERT INTO conversations.associations(registered_alias, registered_number, unregistered_number) VALUES ('{alias}', '{target}', {'+' + source})")
             conn.commit()
-            return;
+            return "success";
 
 
     # Add a message
