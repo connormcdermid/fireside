@@ -84,7 +84,8 @@ def sms_reply():
     result1 = c.fetchone()
     c.execute(f"SELECT registered_number FROM conversations.associations WHERE unregistered_number='{source}'")
     result2 = c.fetchone()
-    print(result1)
+    print("result1:" + result1)
+    print("result2:" + result2)
     target = None
     if result1 is not None or result2 is not None:
         if result1 is not None:
@@ -94,7 +95,7 @@ def sms_reply():
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
         return "success"
 
-    alias = re.compile("^(\w+),").findall(body)[0].lower()
+    alias = body.split(",")[0].lower()
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
     result = c.fetchone()
     while result:
@@ -106,7 +107,6 @@ def sms_reply():
                 from_=TWILIO_NUMBER,
                 to=target
             )
-            source = "+" + source
             c.execute(f"INSERT INTO conversations.associations(registered_alias, registered_number, unregistered_number) VALUES ('{alias}', '{target}', '{source}')")
             conn.commit()
             return "success";
