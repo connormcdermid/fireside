@@ -64,27 +64,21 @@ def sms_reply():
     alias = re.compile("^(\w+),").findall(body)[0]
     c.execute(f"SELECT * FROM conversations.test_users WHERE 'alias'='{alias}'")
     result = c.fetchone()
-    target = str(result['number'])
-    if re.match("^([+])[\d]{11}$", target):
-        client.messages \
-        .create(
-            body=re.split("^(\w+),", body)[1],
-            from_=TWILIO_NUMBER,
-            to=target
-        )
-
+    while result:
+        target = str(result['number'])
+        if re.match("^([+])[\d]{11}$", target):
+            client.messages \
+            .create(
+                body=re.split("^(\w+),", body)[1],
+                from_=TWILIO_NUMBER,
+                to=target
+            )
 
 
     # Add a message
-    resp.message("The Robots are coming! Head for the hills!")
-    client.messages \
-        .create(
-        body="Message received successfully.",
-        from_=TWILIO_NUMBER,
-        to='+18622285361'
-    )
+    resp.message("Invalid alias, please try again!")
     print(str(resp))
-    return str(resp)
+    return str(resp)2
 
 
 @app.route("/reg", methods=['POST'])
