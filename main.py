@@ -55,9 +55,9 @@ def sms_reply():
     # Start our TwiML response
     resp = MessagingResponse()
     form = request.form
-    source = form.getlist('From[]')
+    source = form.get('From')
     print(source)
-    body = form.getlist('Body[]')
+    body = form.get('Body')
     print(body)
 
 
