@@ -76,11 +76,10 @@ def sms_reply():
     print(source)
     body = form.get('Body')
     print(body)
-    alias = re.compile("^(\w+),").findall(body)[0]
+
     if "STOP" in body:
         c.execute(f"DELETE FROM conversations.associations WHERE registered_number='{source}'")
         conn.commit()
-    print(alias)
     c.execute(f"SELECT unregistered_number FROM conversations.associations WHERE registered_number='{source}'")
     result = c.fetchone()
     print(result)
@@ -97,7 +96,7 @@ def sms_reply():
         client.messages.create(body=body, from_=TWILIO_NUMBER, to=target)
         return
 
-
+    alias = re.compile("^(\w+),").findall(body)[0]
     c.execute(f"SELECT number FROM conversations.test_users WHERE alias='{alias}'")
     result = c.fetchone()
     while result:
